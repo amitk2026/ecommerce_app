@@ -20,7 +20,7 @@ connectCloudinay()
 app.use(express.json())
 app.use(
   cors({
-    origin: "https://ecommerce-frontend-eight-pink.vercel.app",
+    origin: "*",
     credentials: true,
   })
 );
