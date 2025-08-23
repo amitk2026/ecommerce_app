@@ -2,7 +2,9 @@ import userModel from "../models/user.model.js";
 import validator from 'validator';
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-
+import mailSender from '../utils/mailSender.js'
+import otpModel from "../models/otp.model.js";
+import otpTemplate from "../mail/emailVerificationTemplate.js";
 const createToken = (id) => {
 
     return jwt.sign({ id },process.env.JWT_SECRET)
@@ -101,4 +103,43 @@ const adminLogin = async (req, res) => {
       }
 }
 
-export {loginUser,registerUser,adminLogin}
+const forgotPassword = async (req, res) => {
+    
+    const { email } = req.body;
+    
+    console.log(email);
+    // validating email format
+          if (!validator.isEmail(email)) {
+               return res.json({success:false, message:"Please enter a valid email"})
+    }
+    
+    // checking user already exists or not
+          const exists = await userModel.findOne({ email })
+          if (!exists) {
+                 return res.json({message:"User not exits",success:false})
+    }
+    
+    const otp = generateNumericOTP(6);
+    
+    const newOtp = new otpModel({
+        email,
+        otp
+    })
+
+    newOtp.save();
+    
+    const mailres = mailSender(email, 'OTP', otpTemplate(otp))
+    console.log(mailres);
+    return res.json({message:"Enter the verification code sent to your email" , success:true,otp})
+    
+}
+
+function generateNumericOTP(length) {
+  let otp = "";
+  for (let i = 0; i < length; i++) {
+    otp += Math.floor(Math.random() * 10);
+  }
+  return otp;
+}
+
+export {loginUser,registerUser,adminLogin,forgotPassword}

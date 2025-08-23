@@ -1,25 +1,144 @@
-import React, { useContext } from 'react'
-import { ShopContext } from '../context/ShopContext'
-const ForgetPassword = () => {
-    
-    const { navigate } = useContext(ShopContext)
+import { useContext, useState } from "react";
+import axios from "axios";
+import { ShopContext } from "../context/ShopContext";
+
+export default function ForgotPassword() {
+ 
+    const { navigate , backendUrl} = useContext(ShopContext);
+
+
+  const [step, setStep] = useState(1);
+  const [email, setEmail] = useState("");
+  const [otp, setOtp] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleRequestOtp = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const res = await axios.post(backendUrl + '/api/user/forgot-password', { email });
+        setMessage(res.data.message);
+        console.log(res.data);
+
+        if (res.data.success) setStep(2);
+        
+    } catch (err) {
+      setMessage(err.response?.data?.message || "Error sending OTP");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleVerifyOtp = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const res = await axios.post("http://localhost:5000/api/auth/verify-otp", { email, otp });
+      setMessage(res.data.message);
+      setStep(3);
+    } catch (err) {
+      setMessage(err.response?.data?.message || "Invalid OTP");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleResetPassword = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const res = await axios.post("http://localhost:5000/api/auth/reset-password", {
+        email,
+        otp,
+        newPassword,
+      });
+      setMessage(res.data.message);
+      setStep(1); // go back to start (or redirect to login page)
+      setEmail("");
+      setOtp("");
+      setNewPassword("");
+    } catch (err) {
+      setMessage(err.response?.data?.message || "Error resetting password");
+    } finally {
+      setLoading(false);
+    }
+  };
+
     return (
-      
-        <form className='flex flex-col items-center w-[90%] sm:max-w-96 m-auto mt-14 gap-4 text-gray-800'>
+      <div className="flex justify-center items-center ">
+   
+      <div className="h-full max-w-md bg-white border border-black shadow-lg rounded-2xl p-6 mt-40">
+        <h2 className="text-xl font-bold mb-4 text-center">Forgot Password</h2>
 
-            <div className='inline-flex items-center gap-2 mb-2 mt-10'>
-                <p className='prata-regular text-3xl'>Reset password</p>
-                <hr className='border-none h-[1.5px] w-8 bg-gray-800' />    
-            </div>
-            
-            <div className='flex flex-col gap-2 w-full'>
-                <input className='w-full px-3 py-2 border border-gray-800' type="password" placeholder='Enter new Password' />
-                <input className='w-full px-3 py-2 border border-gray-800' type="password" placeholder='Confirm password' /> 
-            </div>
-            <p onClick={()=>navigate('/login')} className='w-full flex justify-between text-sm mt-[-8px] cursor-pointer'>Login</p>
-            
-      </form>
-  )
+        {message && (
+                    <p className="mb-3 text-sm text-center text-blue-600 font-medium">{message}</p>
+        )}
+
+        {step === 1 && (
+          <form onSubmit={handleRequestOtp} className="space-y-4">
+            <input
+              type="email"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring"
+              required
+            />
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50"
+            >
+              {loading ? "Sending..." : "Send OTP"}
+            </button>
+          </form>
+        )}
+
+        {step === 2 && (
+          <form onSubmit={handleVerifyOtp} className="space-y-4">
+            <input
+              type="text"
+              placeholder="Enter OTP"
+              value={otp}
+              onChange={(e) => setOtp(e.target.value)}
+              className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring"
+              required
+            />
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 disabled:opacity-50"
+            >
+              {loading ? "Verifying..." : "Verify OTP"}
+            </button>
+          </form>
+        )}
+
+        {step === 3 && (
+          <form onSubmit={handleResetPassword} className="space-y-4">
+            <input
+              type="password"
+              placeholder="Enter new password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring"
+              required
+            />
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700 disabled:opacity-50"
+            >
+              {loading ? "Resetting..." : "Reset Password"}
+            </button>
+          </form>
+                )}
+                
+                <p className="m-auto  cursor-pointer" onClick={()=> navigate('/login')}>Login Back</p>
+      </div>
+  </div>
+
+  );
 }
-
-export default ForgetPassword
