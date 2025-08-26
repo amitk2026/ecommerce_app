@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import axios from "axios";
 import { ShopContext } from "../context/ShopContext";
-
+import { toast } from "react-toastify";
 export default function ForgotPassword() {
  
     const { navigate , backendUrl} = useContext(ShopContext);
@@ -25,6 +25,7 @@ export default function ForgotPassword() {
         if (res.data.success) setStep(2);
         
     } catch (err) {
+      toast.error(res.data.message);
       setMessage(err.response?.data?.message || "Error sending OTP");
     } finally {
       setLoading(false);
@@ -35,9 +36,11 @@ export default function ForgotPassword() {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/verify-otp", { email, otp });
+      const res = await axios.post(backendUrl + '/api/user/verifyOtp', { email, otp });
       setMessage(res.data.message);
-      setStep(3);
+      console.log(res.data);
+      if (res.data.success) setStep(3);
+  
     } catch (err) {
       setMessage(err.response?.data?.message || "Invalid OTP");
     } finally {
@@ -49,16 +52,21 @@ export default function ForgotPassword() {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/reset-password", {
+      const res = await axios.post( backendUrl + "/api/user/reset-password", {
         email,
-        otp,
         newPassword,
       });
       setMessage(res.data.message);
-      setStep(1); // go back to start (or redirect to login page)
+      
+     // setStep(1); // go back to start (or redirect to login page)
       setEmail("");
       setOtp("");
       setNewPassword("");
+
+      if (res.data.success) {
+        toast.success("Password changed")
+        navigate('/login');
+      }
     } catch (err) {
       setMessage(err.response?.data?.message || "Error resetting password");
     } finally {
@@ -69,7 +77,7 @@ export default function ForgotPassword() {
     return (
       <div className="flex justify-center items-center ">
    
-      <div className="h-full max-w-md bg-white border border-black shadow-lg rounded-2xl p-6 mt-40">
+      <div className="h-full max-w-md  shadow-lg rounded-2xl p-6 mt-40">
         <h2 className="text-xl font-bold mb-4 text-center">Forgot Password</h2>
 
         {message && (

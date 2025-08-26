@@ -38,7 +38,40 @@ const loginUser = async (req,res) => {
      }
 }
 
+///
 
+const signUPverify = async (req, res) => {
+         try {
+             
+             const { name, email, password, otp } = req.body;
+
+             const otpRecord = await otpModel.findOne({ email }).sort({ createdAt: -1 });
+       
+          if ( String(otp) !== String(otpRecord.otp)) {
+              return res.json({ message: "Incorrect OTP", success: false });
+             }
+             
+        const salt = await bcrypt.genSalt(10)
+        const hashPassword = await bcrypt.hash(password, salt)
+          
+        const newUser = new userModel({
+            name,
+            email,
+            password : hashPassword
+        })
+        
+        const user = await newUser.save()
+
+        const token = createToken(user._id);
+
+        res.json({ success:true,token})
+             
+         } catch (error) {
+             console.log(error);
+             res.json({ success: false, message:error.message})
+         }
+
+}
 // Route for user Register
 const registerUser = async (req,res) => {
      
@@ -60,22 +93,37 @@ const registerUser = async (req,res) => {
               return res.json({ success:false, message:"Please enter a strong password"})
           }
           
+        const otp = generateNumericOTP(6);
+        
+        const newOtp = new otpModel({
+            email,
+            otp
+        });
+
+        newOtp.save();
+
+        const mailres = mailSender(email, 'OTP', otpTemplate(otp));
+       
+        return res.json({ message: "Enter the verification code sent to your email", success: true }); 
           // hashing user password
           
-          const salt = await bcrypt.genSalt(10)
-          const hashPassword = await bcrypt.hash(password, salt)
-          
-        const newUser = new userModel({
-            name,
-            email,
-            password:hashPassword
-        })
         
-        const user = await newUser.save()
+        
+        // modified from here 
+        //   const salt = await bcrypt.genSalt(10)
+        //   const hashPassword = await bcrypt.hash(password, salt)
+          
+        // const newUser = new userModel({
+        //     name,
+        //     email,
+        //     password:hashPassword
+        // })
+        
+        // const user = await newUser.save()
 
-        const token = createToken(user._id);
+        // const token = createToken(user._id);
 
-        res.json({ success:true,token})
+        // res.json({ success:true,token})
 
       } catch (error) {
         console.log(error);
@@ -103,36 +151,85 @@ const adminLogin = async (req, res) => {
       }
 }
 
+
+//Route for forgotPassword
 const forgotPassword = async (req, res) => {
     
-    const { email } = req.body;
+    try {
+        const { email } = req.body;
+        
+        console.log(email);
+        // validating email format
+              if (!validator.isEmail(email)) {
+                   return res.json({success:false, message:"Please enter a valid email"})
+        }
+        
+        // checking user already exists or not
+              const exists = await userModel.findOne({ email })
+              if (!exists) {
+                     return res.json({message:"User not exits",success:false})
+        }
+        
+        const otp = generateNumericOTP(6);
+        
+        const newOtp = new otpModel({
+            email,
+            otp
+        })
     
-    console.log(email);
-    // validating email format
-          if (!validator.isEmail(email)) {
-               return res.json({success:false, message:"Please enter a valid email"})
+        newOtp.save();
+        
+        const mailres = mailSender(email, 'OTP', otpTemplate(otp))
+        //console.log(mailres);
+    
+        return res.json({message:"Enter the verification code sent to your email" , success:true})
+    } catch (error) {
+        return res.json({ success: false, message: error.message });
     }
-    
-    // checking user already exists or not
-          const exists = await userModel.findOne({ email })
-          if (!exists) {
-                 return res.json({message:"User not exits",success:false})
-    }
-    
-    const otp = generateNumericOTP(6);
-    
-    const newOtp = new otpModel({
-        email,
-        otp
-    })
-
-    newOtp.save();
-    
-    const mailres = mailSender(email, 'OTP', otpTemplate(otp))
-    console.log(mailres);
-    return res.json({message:"Enter the verification code sent to your email" , success:true,otp})
     
 }
+
+
+//Route for verifyOtp
+const verifyOtp = async (req, res) => {
+   try {
+     
+     const { email, otp } = req.body;
+     const otpRecord = await otpModel.findOne({ email }).sort({ createdAt: -1});
+    
+     
+       
+     if ( String(otp) !== String(otpRecord.otp)) {
+         return res.json({ message: "Incorrect OTP", success: false });
+     }
+ 
+     return res.json({message:"OTP verified successfully",success:true})
+   } catch (error) {
+            res.json({message:"verify otp catch", success:false})
+   }
+
+}
+
+
+//Route for updatePassword
+const resetPassword = async (req, res) => {
+
+   try {
+     const { newPassword, email } = req.body;
+     
+     const user = await userModel.findOne({ email });
+ 
+     const hashedPassword = await bcrypt.hash(newPassword, 10);
+ 
+     user.password = hashedPassword;
+     await user.save();
+ 
+     return res.json({success:true,message:"Password reset successful"})
+   } catch (error) {
+       return res.json({ success: false, message: "Error in password reset" });
+   }
+}
+
 
 function generateNumericOTP(length) {
   let otp = "";
@@ -142,4 +239,4 @@ function generateNumericOTP(length) {
   return otp;
 }
 
-export {loginUser,registerUser,adminLogin,forgotPassword}
+export {loginUser,registerUser,adminLogin,forgotPassword,verifyOtp,resetPassword,signUPverify}
