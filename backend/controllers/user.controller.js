@@ -102,7 +102,7 @@ const registerUser = async (req,res) => {
 
         newOtp.save();
 
-        const mailres = mailSender(email, 'OTP', otpTemplate(otp));
+        const mailres = await mailSender(email, 'OTP', otpTemplate(otp));
        
         return res.json({ message: "Enter the verification code sent to your email", success: true }); 
           // hashing user password
@@ -179,7 +179,7 @@ const forgotPassword = async (req, res) => {
     
         newOtp.save();
         
-        const mailres = mailSender(email, 'OTP', otpTemplate(otp))
+        const mailres = await mailSender(email, 'OTP', otpTemplate(otp))
         //console.log(mailres);
     
         return res.json({message:"Enter the verification code sent to your email" , success:true})
