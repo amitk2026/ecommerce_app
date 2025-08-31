@@ -102,38 +102,58 @@ const Login = () => {
 
     {/* Name input for signup only and before OTP */}
     {currentState === 'Sign Up' && !otpSent && (
-      <input
-        onChange={(e) => setName(e.target.value)}
-        value={name}
-        type="text"
-        className='w-full px-3 py-2 border border-gray-800'
-        placeholder='Name'
-        required
-      />
+      <div className="w-full">
+  <label htmlFor="name" className="block text-md font-medium text-black mb-1 required">
+    Name
+  </label>
+  <input
+    id="name"
+    onChange={(e) => setName(e.target.value)}
+    value={name}
+    type="text"
+    className="w-full px-3 py-2 border border-gray-800 rounded"
+    placeholder="Name"
+    required
+  />
+</div>
+
     )}
 
     {/* Email input only if not OTP step */}
-    {(!otpSent || currentState === 'Login') && (
-      <input
-        onChange={(e)=>setEmail(e.target.value)}
-        value={email}
-        type="email"
-        className='w-full px-3 py-2 border border-gray-800'
-        placeholder='Email'
-        required
-      />
-    )}
+      {(!otpSent || currentState === 'Login') && (
+      
+        <div className="w-full ">
+    <label htmlFor="email" className="block text-md font-medium text-black mb-1 required">
+      Email
+    </label>
+    <input
+      id="email"
+      onChange={(e) => setEmail(e.target.value)}
+      value={email}
+      type="email"
+      className="w-full px-3 py-2 border border-gray-800 rounded"
+      placeholder="Email"
+      required
+    />
+  </div>
+)}
 
     {/* Password input only before OTP */}
     {(!otpSent || currentState === 'Login') && (
-      <input
-        onChange={(e)=>setPassword(e.target.value)}
-        value={password}
-        type="password"
-        className='w-full px-3 py-2 border border-gray-800'
-        placeholder='Password'
-        required
-      />
+      <div className="w-full ">
+  <label htmlFor="password" className="block text-md font-medium text-black mb-1 required">
+    Password
+  </label>
+  <input
+    id="password"
+    onChange={(e) => setPassword(e.target.value)}
+    value={password}
+    type="password"
+    className="w-full px-3 py-2 border border-gray-800 rounded"
+    placeholder="Password"
+    required
+  />
+</div>
     )}
 
     {/* OTP input for signup after OTP is sent */}
@@ -148,7 +168,7 @@ const Login = () => {
       />
     )}
 
-    <div className='w-full flex justify-between text-sm mt-[-8px]'>
+    <div className='w-full flex justify-between text-sm mt-[-10px]'>
         {currentState === 'Login' ? <p onClick={() => navigate('/forget-password')} className='cursor-pointer text-blue-800'>Forgot password?</p> : ' '}
       {
         currentState === 'Login' ? 
