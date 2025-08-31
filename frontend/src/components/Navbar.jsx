@@ -45,23 +45,25 @@ const Navbar = () => {
            <hr className='w-2/4 border-none h-[1.5px] bg-gray-700 hidden'/>
         </NavLink>
       </ul>
-      
 
+       
       <div className='flex items-center gap-6'>
-        <img onClick={()=>setShowSearch(true)} src={assets.search_icon} className='w-5 cursor-pointer' alt='' />
+        <img onClick={()=>setShowSearch(true)} src={assets.search_icon} className='w-5   cursor-pointer' alt='' />
         <div className='group relative'>
           {/* <img onClick={() => token ? null : navigate('/login')} src={assets.profile_icon} className='w-5 cursor-pointer ' alt='' /> */}
           <div
             onClick={() => token ? null : navigate('/login')}
-            className='cursor-pointer' >
-                <img src={assets.profile_icon} className='w-5' alt='Profile Icon' />
-          </div>
+            className='cursor-pointer pointer-events-auto pl-2 pr-2 rounded-full z-50 relative' >
+            <img src={assets.profile_icon} className='w-5 h-5 min-w-[20px] min-h-[20px] ' alt='Profile Icon' />
+         </div>
+
+
 
           {/* ---- Dropdown Menu */}
           {
             token &&
           
-            <div className='group-hover:block hidden absolute dropdown-menu right-0 pt-4'>
+            <div className='group-hover:block hidden absolute dropdown-menu right-0 pt-4 '>
               <div className='flex flex-col gap-2 w-36 py-3 px-5 bg-slate-100 text-gray-500 rounded'>
                 <p onClick={()=>navigate('/profile')} className='cursor-pointer hover:text-black'>My Profile</p>
                 <p onClick={()=>navigate('/orders')} className='cursor-pointer hover:text-black'>Orders</p>
