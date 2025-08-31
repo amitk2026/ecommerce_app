@@ -48,17 +48,25 @@ const Navbar = () => {
 
        
       <div className='flex items-center gap-6'>
-        <img onClick={()=>setShowSearch(true)} src={assets.search_icon} className='w-5   cursor-pointer' alt='' />
-        <div className='group relative'>
-          {/* <img onClick={() => token ? null : navigate('/login')} src={assets.profile_icon} className='w-5 cursor-pointer ' alt='' /> */}
-          <div
-            onClick={() => token ? null : navigate('/login')}
-            className='cursor-pointer pointer-events-auto pl-2 pr-2 rounded-full z-50 relative' >
-            <img src={assets.profile_icon} className='w-5 h-5 min-w-[20px] min-h-[20px] ' alt='Profile Icon' />
-         </div>
+        <img onClick={() => setShowSearch(true)} src={assets.search_icon} className='w-5 cursor-pointer' alt='' />
+        
+    <div className='group relative'>
+        
+         <Link
+            to="/login"
+            className="w-8 h-8 flex items-center justify-center rounded-full cursor-pointer"
+            >
+            <img
+              src={assets.profile_icon}
+              className="w-5 h-5"
+              alt="Profile Icon"
+           />
+        </Link>
 
 
-
+      
+    
+        
           {/* ---- Dropdown Menu */}
           {
             token &&
@@ -71,7 +79,7 @@ const Navbar = () => {
               </div>
             </div>
           }
-        </div>
+    </div>
           
 
         <Link to='/cart' className='relative'>
@@ -80,7 +88,7 @@ const Navbar = () => {
                  rounded-full text-[8px]'>{getCartCount()}</p>
         </Link>
         <img onClick={() => setVisible(true)} src={assets.menu_icon} alt='' className='w-5 cursor-pointer sm:hidden '/>
-      </div>
+    </div>
 
       {/* sidebar menu for small screen */}
 
