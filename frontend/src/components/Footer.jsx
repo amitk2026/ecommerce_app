@@ -7,10 +7,11 @@ const Footer = () => {
           <div className='flex flex-col sm:grid grid-cols-[3fr_1fr_1fr] gap-14 my-10
            mt-40 text-sm '>
               <div>
-                  <img src={assets.logo} className='mb-5 w-32' alt="" />
+                  <img src={assets.logoexp5} className='mb-5 w-32 h-6' alt="" />
                   <p className='w-full md:w-2/3 text-gray-600'>
-                      Lorem Ipsum is simply dummy text of
-                      the printing and typesetting industry
+                      Your one-stop destination for smarter shopping. At SmartCart, we bring you
+                      the best deals, top brands, and a seamless shopping experience—all in one place.
+                      Discover convenience, speed, and reliability every time you shop with us. Because smart choices start here.
                   </p>
               </div>
               
@@ -27,8 +28,8 @@ const Footer = () => {
               <div>
                   <p className='text-xl font-medium mb-5'>GET IN TOUCH</p>
                   <ul className='flex flex-col gap-1 text-gray-600'>
-                      <li>+1-212-554-7554</li>
-                      <li>contact@foreveryou.com</li>
+                      <li>+91-854-296-1699</li>
+                      <li>help@smartcart.demo</li>
                   </ul>
               </div>
           </div>
@@ -36,7 +37,7 @@ const Footer = () => {
           <div>
               <hr />
               <p className='py-5 text-sm text-center'>
-                  Copyright 2024@ forever.com -All Right Reserved
+                  Copyright 2025@ smartcart.com -All Right Reserved
               </p>
           </div>
     </div>

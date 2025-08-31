@@ -28,7 +28,8 @@ const Login = () => {
           const response = await axios.post(backendUrl + '/api/user/register', { name, email, password })
 
           if (response.data.success) {
-             
+            
+            toast.success("We've sent you OTP");
             setOtpSent(true);
             //setToken(response.data.token)
             //localStorage.setItem('token', response.data.token)
@@ -45,13 +46,16 @@ const Login = () => {
            const response = await axios.post(backendUrl + '/api/user/verifyReg', { name, email, password, otp });
  
            if (response.data.success) {
-             setToken(response.data.token);
-             localStorage.setItem('token', response.data.token);
-             setOtp(false);
+             toast.success("OTP correct Welcome")
+             setOtpSent(false);
              setName('');
              setPassword('');
              setEmail('');
              setOtp('');
+             setCurrentState('Login')
+             navigate('/login')
+             //setToken(response.data.token);
+            // localStorage.setItem('token', response.data.token);
            }
          } catch (error) {
            toast.error(response.data.message);
@@ -63,6 +67,7 @@ const Login = () => {
           const response = await axios.post(backendUrl + '/api/user/login', { email, password })
 
           if (response.data.success) {
+             toast.success("Signed in successfully");
              setToken(response.data.token)
              localStorage.setItem('token',response.data.token)
           }
@@ -84,31 +89,7 @@ const Login = () => {
           }
   },[token])
 
-  // return (
-  //   <form onSubmit={onSubmitHandler} className='flex flex-col items-center w-[90%] sm:max-w-96 m-auto mt-14 gap-4 text-gray-800'>
-  //     <div className='inline-flex items-center gap-2 mb-2 mt-10'>
-  //       <p className='prata-regular text-3xl'>{currentState}</p>
-  //       <hr className='border-none h-[1.5px] w-8 bg-gray-800' />
-  //     </div>
-      
-     
-  //    { currentState === 'Login' ? '':  <input onChange={(e) => setName(e.target.value)} value={name} type="text" className='w-full px-3 py-2 border border-gray-800' placeholder='Name' required />}
-      
-  //     <input onChange={(e)=>setEmail(e.target.value)} value={email}  type="email" className='w-full px-3 py-2 border border-gray-800' placeholder='Email' required/>
-  //     <input onChange={(e)=>setPassword(e.target.value)} value={password}  type="password" className='w-full px-3 py-2 border border-gray-800' placeholder='Password' required />
-  //     <div className='w-full flex justify-between text-sm mt-[-8px]'>
-  //       <p onClick={()=> navigate('/forget-password')} className='cursor-pointer text-blue-800'>Forgot password?</p>
-  //       {
-  //         currentState === 'Login' ? 
-  //           <p onClick={() => setCurrentState('Sign Up')} className='cursor-pointer'>Create account</p> :
-  //           <p onClick={() => setCurrentState('Login')} className='cursor-pointer'>Login Here</p>
-  //       }
-  //     </div>
-
-  //     <button className='bg-black text-white font-light px-8 py-2 mt-4'>{currentState === 'Login' ? 'Sign IN' : 'Sign Up'}</button>
   
-  //   </form>
-  // )
   
   
   return (
@@ -176,7 +157,8 @@ const Login = () => {
       }
     </div>
 
-    <button className='bg-black text-white font-light px-8 py-2 mt-4 cursor-pointer'>
+      <button className='bg-[#007BFF]  text-white font-light px-8 py-2 mt-4 cursor-pointer
+     hover:bg-blue-700 transition-colors duration-500 rounded-1' >
       {currentState === 'Login' ? 'Sign IN' : otpSent ? 'Verify OTP' : 'Sign Up'}
     </button>
 

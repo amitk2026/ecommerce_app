@@ -18,8 +18,9 @@ const BestSeller = () => {
           <div className='text-center text-3xl py-8'>
               <Title text1={'BEST'} text2={'SELLER'} />
               <p className='w-3/4  m-auto text-xs sm:text-sm md:text-base text-gray-600'>
-               Loren Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum
-                has been the.
+                         Explore SmartCart’s bestsellers—customer favorites loved for their quality, style,
+                         and value. These top picks are tried, tested, and trending. Don’t miss out—shop our most popular
+                        items today!
               </p>
           </div>
           

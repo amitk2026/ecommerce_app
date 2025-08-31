@@ -22,8 +22,10 @@ export default function ForgotPassword() {
         setMessage(res.data.message);
         console.log(res.data);
 
-        if (res.data.success) setStep(2);
-        
+      if (res.data.success) {
+        toast.success("We've sent you OTP")
+        setStep(2);
+      } 
     } catch (err) {
       toast.error(res.data.message);
       setMessage(err.response?.data?.message || "Error sending OTP");
@@ -39,8 +41,10 @@ export default function ForgotPassword() {
       const res = await axios.post(backendUrl + '/api/user/verifyOtp', { email, otp });
       setMessage(res.data.message);
       console.log(res.data);
-      if (res.data.success) setStep(3);
-  
+      if (res.data.success) {
+        toast.success("Verified! Set your new password")
+        setStep(3);
+      }
     } catch (err) {
       setMessage(err.response?.data?.message || "Invalid OTP");
     } finally {

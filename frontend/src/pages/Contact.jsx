@@ -15,10 +15,13 @@ const Contact = () => {
         <img className='w-full md:max-w-[480px]' src={assets.contact_img} alt="" />
         <div className='flex flex-col justify-center items-start gap-6'>
            <p className='font-semibold text-xl text-gray-600'>Our Store</p>
-           <p className='text-gray-500'>59008 Willms Station <br />Suite 390, Washington, USA</p>
-           <p className='text-gray-500'>Tel: (415) 555-0132 <br />Email: admin@forever.com </p>
-           <p className='font-semibold text-xl text-gray-600'>Careers at Forever</p>
-          <p className='text-gray-500'>Learn more about our teams and job openings</p>
+           <p className='text-gray-500'>201309 Noida Sector 62 <br />Uttar Pradesh,India</p>
+           <p className='text-gray-500'>Tel: +91 8542961699 <br />Email: admin@smartcart.com </p>
+           <p className='font-semibold text-xl text-gray-600'>Careers at SmartCart</p>
+          <p className='text-gray-500'>SmartCart is more than a marketplace—it’s a place to innovate,
+                            grow, and make an impact. We welcome passionate, creative, and customer-focused individuals
+                            to join our journey. Together, we’re shaping smarter shopping experiences while building rewarding
+                            careers. Discover opportunities where your skills and ambition truly matter.</p>
           <button className='border border-black px-8 py-4 text-sm hover:bg-black hover:text-white transition-all duration-500'>Explore Jobs</button>
           <NewsLetterBox/>
         </div>
