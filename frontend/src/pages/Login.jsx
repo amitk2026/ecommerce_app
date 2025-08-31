@@ -157,7 +157,7 @@ const Login = () => {
     )}
 
     {/* OTP input for signup after OTP is sent */}
-    {otpSent && (
+    { otpSent && (
       <input
         onChange={(e)=>setOtp(e.target.value)}
         value={otp}
@@ -173,7 +173,7 @@ const Login = () => {
       {
         currentState === 'Login' ? 
           <p onClick={() => setCurrentState('Sign Up')} className='cursor-pointer'>Create account</p> :
-          <p onClick={() => setCurrentState('Login')} className='cursor-pointer'>Login Here</p>
+          <p onClick={() => {setOtpSent(false), setCurrentState('Login')}}  className='cursor-pointer'>Login Here</p>
       }
     </div>
 
