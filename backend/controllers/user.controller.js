@@ -4,7 +4,9 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import mailSender from '../utils/mailSender.js'
 import otpModel from "../models/otp.model.js";
+import couponModel from "../models/coupon.model.js";
 import otpTemplate from "../mail/emailVerificationTemplate.js";
+import couponTemplate from "../mail/coupontemplate.js";
 const createToken = (id) => {
 
     return jwt.sign({ id },process.env.JWT_SECRET)
@@ -18,6 +20,7 @@ const loginUser = async (req,res) => {
 
          const user = await userModel.findOne({ email })
 
+         const name = user.name
          if (!user) {
               return res.json({success:false, message:"User doesn't exists"})
          }
@@ -26,7 +29,7 @@ const loginUser = async (req,res) => {
          
          if (isMatch) {
              const token = createToken(user._id)
-             res.json({success:true,token})
+             res.json({success:true,token,name})
          }
          else {
              return res.json({ success:false,message:"Invalid credentials"})
@@ -105,25 +108,7 @@ const registerUser = async (req,res) => {
         const mailres = await mailSender(email, 'OTP', otpTemplate(otp));
        
         return res.json({ message: "Enter the verification code sent to your email", success: true }); 
-          // hashing user password
-          
-        
-        
-        // modified from here 
-        //   const salt = await bcrypt.genSalt(10)
-        //   const hashPassword = await bcrypt.hash(password, salt)
-          
-        // const newUser = new userModel({
-        //     name,
-        //     email,
-        //     password:hashPassword
-        // })
-        
-        // const user = await newUser.save()
-
-        // const token = createToken(user._id);
-
-        // res.json({ success:true,token})
+    
 
       } catch (error) {
         console.log(error);
@@ -177,10 +162,10 @@ const forgotPassword = async (req, res) => {
             otp
         })
     
-        newOtp.save();
+       await newOtp.save();
         
         const mailres = await mailSender(email, 'OTP', otpTemplate(otp))
-        //console.log(mailres);
+    
     
         return res.json({message:"Enter the verification code sent to your email" , success:true})
     } catch (error) {
@@ -230,6 +215,42 @@ const resetPassword = async (req, res) => {
    }
 }
 
+// route for coupon 
+const couponfun = async (req, res) => {
+
+    try {
+        const { email, userId } = req.body
+    
+        const user = await userModel.findById(userId)
+        const name = user.name;
+        
+         if (email !== user.email) return res.json({ success: false, message: "Please provide your email address" })
+        if (user.isCoupon) return res.json({ success: false, message: "You already claimed this coupon" })
+
+        const coupon = generateCoupon(6)
+
+         const newCoupon = new couponModel({
+            email,
+            coupon
+         })
+        
+        await newCoupon.save()
+
+        const mailres = await mailSender(email, 'OTP', couponTemplate(name, coupon))
+      
+        user.isCoupon = true;
+       
+        await user.save();
+        
+        return res.json({ success: true, user, message: "backend api done" })
+        
+    } catch (error) {
+         
+         return res.json({message:error.message,success:false})
+    }
+    
+}
+
 
 function generateNumericOTP(length) {
   let otp = "";
@@ -239,4 +260,15 @@ function generateNumericOTP(length) {
   return otp;
 }
 
-export {loginUser,registerUser,adminLogin,forgotPassword,verifyOtp,resetPassword,signUPverify}
+function generateCoupon(length) {
+  let result = '';
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length); // Random index
+    result += characters[randomIndex]; // Append the random character
+  }
+
+  return result;
+}
+export {loginUser,registerUser,adminLogin,forgotPassword,verifyOtp,resetPassword,signUPverify,couponfun}

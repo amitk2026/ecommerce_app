@@ -18,6 +18,10 @@ const userSchema = new mongoose.Schema({
         type: Object,
         default:{}
     },
+    isCoupon:{
+        type: Boolean,
+        default:false
+    },
 
 }, { minimize: false })
 

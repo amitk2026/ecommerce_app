@@ -67,7 +67,8 @@ const Login = () => {
           const response = await axios.post(backendUrl + '/api/user/login', { email, password })
 
           if (response.data.success) {
-             toast.success("Signed in successfully");
+             console.log(response.data)
+             toast.success(`Welcome, ${response.data.name}! Explore new arrivals now! `);
              setToken(response.data.token)
              localStorage.setItem('token',response.data.token)
           }
@@ -172,8 +173,8 @@ const Login = () => {
         {currentState === 'Login' ? <p onClick={() => navigate('/forget-password')} className='cursor-pointer text-blue-800'>Forgot password?</p> : ' '}
       {
         currentState === 'Login' ? 
-          <p onClick={() => setCurrentState('Sign Up')} className='cursor-pointer'>Create account</p> :
-          <p onClick={() => {setOtpSent(false), setCurrentState('Login')}}  className='cursor-pointer'>Login Here</p>
+          <p onClick={() =>{setPassword(''),setEmail(''), setCurrentState('Sign Up')}} className='cursor-pointer'>Create account</p> :
+          otpSent ? '' : <p onClick={() => {setOtpSent(false),setEmail(''),setPassword(''),setName(''), setCurrentState('Login')}}  className='cursor-pointer'>Login Here</p>
       }
     </div>
 

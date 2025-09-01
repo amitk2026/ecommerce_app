@@ -1,15 +1,14 @@
 
-
 import mongoose from "mongoose";
 
 
-const OTPSchema = new mongoose.Schema({
+const couponSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
     trim: true,
   },
-  otp: {
+  coupon: {
     type: String,
     required: true,
     trim: true,
@@ -17,12 +16,11 @@ const OTPSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now,
-    expires: 5 * 60, // OTP expires after 5 minutes
+    expires: 15*24*60*60, // OTP expires after 5 minutes
   },
 });
 
 
 
-const otpModel = mongoose.model('OTP', OTPSchema);
-export default otpModel;
-
+const couponModel = mongoose.model('COUPON', couponSchema);
+export default couponModel;
