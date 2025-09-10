@@ -27,7 +27,7 @@ const ShopContextProvider = (props) => {
             toast.error('Select Product Size')
         }
       
-      if(size)  toast.success('Product added to cart')
+     else{ if(size)  toast.success('Product added to cart')
 
         let cartData = structuredClone(cartItems);
 
@@ -55,7 +55,7 @@ const ShopContextProvider = (props) => {
                 console.log(error)
                 toast.error(error.message)
             }
-        }
+        }}
     }
 
     const getCartCount = () => {
@@ -156,7 +156,7 @@ const ShopContextProvider = (props) => {
         getCartCount, updateQuantity,
         getCartAmount, navigate,
         backendUrl,
-        setToken,token
+        setToken, token,
     }     
     
     return (

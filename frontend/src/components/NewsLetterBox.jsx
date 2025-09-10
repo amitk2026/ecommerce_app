@@ -41,8 +41,8 @@ const NewsLetterBox = () => {
               <input type="email" placeholder='Enter your email' onChange={(e) => setEmail(e.target.value)}
                    value={email}
                   className='w-full sm:flex-1 outline-none ' required />
-              <button  type='submit' className='bg-blue-600 hover:bg-blue-800 transition-colors duration-500 text-white
-                text-xs px-10 py-4 cursor-pointer'>SUBSCRIBE</button>
+              <button  type='submit' className='border border-black bg-blue-500 hover:bg-blue-700 transition-colors duration-500 text-black
+                hover:text-white text-xs px-10 py-4 cursor-pointer'>SUBSCRIBE</button>
           </form>
     </div>
   )

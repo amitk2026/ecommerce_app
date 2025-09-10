@@ -1,15 +1,17 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState ,useRef,useEffect} from 'react'
 import { assets } from '../assets/frontend_assets/assets.js'
 import { Link, NavLink } from 'react-router-dom'
 import { ShopContext } from '../context/ShopContext.jsx';
 
 const Navbar = () => {
 
+  const { setShowSearch, getCartCount, navigate, token, setToken, setCartItems} = useContext(ShopContext)
+
   const [visible, setVisible] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
-  const { setShowSearch, getCartCount, navigate, token, setToken, setCartItems } = useContext(ShopContext)
   
 
+  
   const logout = () => {
     navigate('/login')
     localStorage.removeItem('token')
@@ -89,8 +91,8 @@ const Navbar = () => {
 
           
 
-        <Link to='/cart' className='relative'>
-          <img src={assets.cart_icon} className='w-5 min-w-5' alt='' />
+        <Link onClick={()=>setShowDropdown(false)} to='/cart' className='relative'>
+          <img  src={assets.cart_icon} className='w-5 min-w-5' alt='' />
           <p className='absolute right-[-5px] bottom-[-5px] w-4 text-center leading-4 bg-black text-white aspect-square 
                  rounded-full text-[8px]'>{getCartCount()}</p>
         </Link>

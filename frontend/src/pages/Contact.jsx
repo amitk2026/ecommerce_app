@@ -22,7 +22,7 @@ const Contact = () => {
                             grow, and make an impact. We welcome passionate, creative, and customer-focused individuals
                             to join our journey. Together, we’re shaping smarter shopping experiences while building rewarding
                             careers. Discover opportunities where your skills and ambition truly matter.</p>
-          <button className='border border-black px-8 py-4 text-sm hover:bg-black hover:text-white transition-all duration-500'>Explore Jobs</button>
+          <button className='border bg-blue-500 border-black px-8 py-4 text-sm hover:bg-blue-700 hover:text-white transition-all duration-500'>Explore Jobs</button>
           <NewsLetterBox/>
         </div>
       </div>
