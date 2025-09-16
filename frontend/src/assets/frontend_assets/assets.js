@@ -74,11 +74,12 @@ import contact_img from './contact_img.png'
 import razorpay_logo from './razorpay_logo.png'
 import stripe_logo from './stripe_logo.png'
 import cross_icon from './cross_icon.png'
-import newlogo1 from './newlogo1.png'
 import logoexp from './logoexp.png'
-import logoexp2 from './logoexp2.png'
 import logoexp4 from './logoexp4.png'
 import logoexp5 from './logoexp5.png'
+import logo6 from './logo6.jpg'
+import logo7 from './logo7.jpg'
+import logo8 from './logo8.jpg'
 export const assets = {
     logo,
     hero_img,
@@ -99,9 +100,8 @@ export const assets = {
     razorpay_logo,
     stripe_logo,
     cross_icon,
-    newlogo1,
     logoexp,
-    logoexp2,logoexp4,logoexp5
+    logoexp4,logoexp5,logo6,logo7,logo8
 
 }
 
