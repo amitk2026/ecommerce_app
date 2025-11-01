@@ -44,7 +44,7 @@ This project provides a complete shopping experience with authentication, cart, 
 
 *Other Tools*
 - JWT (Authentication & Authorization)  
-- Stripe / Razorpay (Payments)  
+- Razorpay (Payments)  
 - Cloudinary (Image upload)  
 - Git & GitHub for version control  
 
@@ -69,3 +69,4 @@ ecommerce-project/
 │── README.md
 
 │── package.json
+
