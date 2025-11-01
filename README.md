@@ -32,7 +32,7 @@ This project provides a complete shopping experience with authentication, cart, 
 
 *Frontend*
 - React.js  
-- Redux Toolkit (state management)  
+- Context API (state management)  
 - Tailwind CSS (UI)  
 
 *Backend*
@@ -67,4 +67,5 @@ ecommerce-project/
 │
 │── .gitignore
 │── README.md
+
 │── package.json
